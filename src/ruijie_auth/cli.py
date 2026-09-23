@@ -111,6 +111,12 @@ def probe_authenticator(interface: InterfaceInfo, timeout: float = 1.2) -> bool:
                 continue
             code, _, eap = parsed
             if code == EAP_REQUEST and len(eap) >= 5 and eap[4] == EAP_IDENTITY:
+                for destination in (RUIJIE_GROUP, STANDARD_GROUP):
+                    logoff = Ether(src=interface.mac, dst=destination) / EAPOL(
+                        version=1, type=2, len=0
+                    )
+                    sendp(logoff, iface=interface.key, verbose=False)
+                time.sleep(0.5)
                 return True
         return False
     except (OSError, ValueError):
