@@ -25,7 +25,7 @@
 - 默认主动探测锐捷认证服务器，自动选择真正连接校园网的网卡；
 - 仅在传入 `--interface` 时使用用户指定网卡；
 - 支持按名称、描述或 Windows NPF 名称指定网卡；
-- 密码使用隐藏输入，不接受命令行密码参数；
+- 密码默认使用隐藏输入，也支持通过命令行参数传入；
 - 账号密码不会写入本工具日志；
 - 原样显示锐捷扩展 Success/Failure 中的 GB18030 中文通知；
 - 默认复现原客户端的三次应答行为；
@@ -75,6 +75,16 @@ ruijie-auth
 ```text
 ruijie-auth --username YOUR_ID
 ```
+
+账号密码都通过参数传入，适合启动脚本或无人值守认证：
+
+```text
+ruijie-auth --username YOUR_ID --password YOUR_PASSWORD
+ruijie-auth -u YOUR_ID -p YOUR_PASSWORD
+```
+
+命令行参数可能被系统进程列表或 Shell 历史记录保存；在多人共用环境中建议继续使用
+默认的隐藏输入方式。
 
 只有需要覆盖自动选择结果时才指定网卡：
 

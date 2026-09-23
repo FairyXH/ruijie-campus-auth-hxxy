@@ -471,6 +471,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("-i", "--interface", help="网卡名称、描述或 NPF 设备名")
     parser.add_argument("--list-interfaces", action="store_true", help="列出网卡后退出")
     parser.add_argument("-u", "--username", help="校园网用户名；省略时交互输入")
+    parser.add_argument("-p", "--password", help="校园网密码；省略时隐藏交互输入")
     parser.add_argument(
         "--encoding", default="gb18030", help="账号密码编码（默认: gb18030）"
     )
@@ -508,7 +509,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not username:
         LOG.error("用户名不能为空")
         return 2
-    password = getpass.getpass("校园网密码: ")
+    password = args.password if args.password is not None else getpass.getpass("校园网密码: ")
     if not password:
         LOG.error("密码不能为空")
         return 2
