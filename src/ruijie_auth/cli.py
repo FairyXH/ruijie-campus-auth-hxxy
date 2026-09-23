@@ -47,12 +47,15 @@ class InterfaceInfo:
 
 def setup_logging(path: Path, verbose: bool) -> None:
     LOG.setLevel(logging.DEBUG)
+    if any(getattr(handler, "_ruijie_managed", False) for handler in LOG.handlers):
+        return
     formatter = logging.Formatter(
         "%(asctime)s [%(levelname)s] %(message)s", "%Y-%m-%d %H:%M:%S"
     )
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG if verbose else logging.INFO)
     console.setFormatter(formatter)
+    console._ruijie_managed = True  # type: ignore[attr-defined]
     LOG.addHandler(console)
 
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -61,6 +64,7 @@ def setup_logging(path: Path, verbose: bool) -> None:
     )
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
+    file_handler._ruijie_managed = True  # type: ignore[attr-defined]
     LOG.addHandler(file_handler)
 
 
